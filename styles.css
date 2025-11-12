@@ -1,0 +1,420 @@
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(to top, var(--theme-color1), var(--theme-color2));
+    background-attachment: fixed;
+    overflow: hidden; /* Hide the scrollbar */
+    transition: background 1s ease;/* Smooth transition for the background */
+  }
+
+  #top-bar {
+    width: 100%;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.301);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between search box and zoom slider */
+    padding: 0 20px; /* Add padding to the left and right */
+    position: fixed;
+    top: -50px; /* Initially hide the top bar above the viewport */
+    left: 0;
+    z-index: 1000;
+    transition: top 0.3s ease; /* Smooth transition for the top property */
+    outline: 4px solid rgba(0, 0, 0, 0.212); /* Outline the image */
+  }
+  
+  #top-bar.visible {
+    top: 0; /* Move the top bar into view */
+  }
+
+  #settings-button {
+    margin-right: auto;
+    background-color: rgba(0, 0, 0, 0.308);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  
+  #search-box {
+    width: 300px;
+    padding: 5px;
+    border-radius: 2px;
+    border: 1px solid black; /* Outline in black */
+    background-color: rgba(40, 40, 40, 0.5); /* Dark grey box */
+    color: white; /* White text for user input */
+  }
+  
+  #search-box::placeholder {
+    color: rgba(255, 255, 255, 0.5); /* Light grey text for placeholder */
+  }
+
+  #sort-dropdown {
+    width: 150px;
+    padding: 5px;
+    border-radius: 2px;
+    border: 1px solid black; /* Outline in black */
+    background-color: rgba(40, 40, 40, 0.5); /* Dark grey box */
+    color: white; /* White text */
+  }
+
+  #filter-condition {
+    width: 150px;
+    padding: 5px;
+    border-radius: 2px;
+    border: 1px solid black; /* Outline in black */
+    background-color: rgba(40, 40, 40, 0.5); /* Dark grey box */
+    color: white; /* White text */
+  }
+
+  #zoom-slider {
+    width: 200px;
+  }
+
+  #add-game-button {
+    background-color: rgba(0, 0, 0, 0.308);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 25px;
+  }
+
+  #add-game-button:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  #image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    padding: 20px;
+    overflow-y: scroll; /* Enable scrolling within the grid */
+    height: 100vh; /* Ensure the grid takes the full height of the viewport */
+    width: fit-content; /* Allow the grid to grow horizontally */
+    max-width: calc(100% - 40px); /* Prevent the grid from overflowing horizontally */
+  }
+  
+  #image-grid::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar for WebKit browsers */
+  }
+  
+  .grid-image-container {
+    position: relative;
+  }
+
+  .grid-image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    transition: transform 0.3s, outline 0.3s; /* Smooth transition for transform and outline */
+    transform-origin: center; /* Ensure the image scales from the top */
+  }
+  
+  .grid-image:hover{
+    transform: scale(1.1); /* Grow the image by 10% */
+    outline: 2px solid white; /* Outline the image */
+  }
+
+  .grid-image.active {
+    transform: scale(1.1); /* Grow the image by 10% */
+    outline: 2px solid white; /* Outline the image */
+  }
+
+  body.hide-cursor .grid-image:hover {
+    transform: none; /* Disable hover effect */
+    outline: none; /* Disable hover effect */
+  }
+  
+  .game-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20%; /* Adjust height as needed */
+    object-fit: contain; /* Ensure the image is contained within the banner */
+    object-position: top; /* Position the image at the top */
+    pointer-events: none; /* Ensure the banner doesn't block clicks */
+    z-index: 1; /* Ensure the banner is on top */
+    transition: transform 0.3s, top 0.3s; /* Smooth transition for transform and top */
+    transform-origin: center top; /* Ensure the banner scales from the center top */
+    display: block; /* Ensure the banner is visible */
+  }
+  
+  .grid-image-container:hover .game-banner {
+    transform: scale(1.1); /* Grow the banner by 10% */
+    top: -5%; /* Adjust the top position to move the banner up */
+  }
+
+  body.hide-cursor {
+    cursor: none; /* Hide the cursor */
+  }
+
+  .context-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    z-index: 1001;
+  }
+  
+  .context-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: none;
+    text-align: left;
+    color: black; /* Set the text color */
+  }
+  
+  .context-menu button:hover {
+    background-color: lightgrey;
+  }
+
+  .form-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--form-container-bg);
+    color: var(--form-font-color);
+    padding: 20px;
+    border: 1px solid black;
+    z-index: 1002;
+    width: 600px; /* Increase the width to accommodate the new layout */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .form-header h2 {
+    margin: 0;
+  }
+  
+  .form-header button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+  }
+
+  .tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .tab-button {
+    background-color: var(--form-field-bg);
+    color: var(--form-font-color);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .tab-button.active {
+    background-color: var(--form-container-bg);
+  }
+  
+  .tab-content {
+    display: none;
+  }
+  
+  .tab-content.active {
+    display: block;
+  }
+  
+  #game-form {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .form-fields {
+    display: flex;
+    flex-direction: column;
+    width: 60%; /* Adjust the width to leave space for the boxart preview */
+  }
+  
+  .form-fields label {
+    margin-bottom: 10px;
+    background-color: var(--form-container-bg);
+  }
+  .form-fields input {
+    margin-bottom: 10px;
+    background-color: var(--form-field-color);
+    color: var(--form-font-color);
+  }
+  
+  .boxart-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  #boxart-preview {
+    max-width: 100%;
+    max-height: 300px;
+  }
+  
+  #prev-boxart-button,
+  #next-boxart-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  #prev-boxart-button {
+    left: 0;
+  }
+  
+  #next-boxart-button {
+    right: 0;
+  }
+
+  .collectionart-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  
+  #collectionart-preview {
+    max-width: 100%;
+    max-height: 300px;
+  }
+  
+  #prev-collectionart-button,
+  #next-collectionart-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  #prev-collectionart-button {
+    left: 0;
+  }
+  
+  #next-collectionart-button {
+    right: 0;
+  }
+
+  .future-release {
+    filter: brightness(50%) /* Darken the image */
+  }
+
+  .game-container {
+    position: relative; /* Ensure the container is positioned */
+    display: inline-block; /* Ensure the container wraps the image */
+  }
+  
+  .game-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20%; /* Adjust height as needed */
+    background-size: cover;
+    pointer-events: none; /* Ensure the banner doesn't block clicks */
+    z-index: 1; /* Ensure the banner is on top */
+    visibility: hidden; /* Hide the banner by default */
+  }
+
+  #home-screen {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .home-row {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    gap: 10px;
+  }
+  
+  .home-row h2 {
+    margin: 0;
+    font-size: 1.5em; /* Adjust font size as needed */
+    text-align: left; /* Align the title to the left */
+    padding-top: 20px; /* Add space above the title */
+  }
+  
+  .row-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .row-games {
+    display: flex;
+    overflow-x: auto;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+  }
+  
+  .row-games img {
+    width: 150px;
+    height: auto;
+    cursor: pointer;
+  }
+  
+  .scroll-left,
+  .scroll-right {
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    align-items: center;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .scroll-left:hover,
+  .scroll-right:hover {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .row-games::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar for WebKit browsers */
+  }
+
+  .bottom-bar {
+    position: fixed;
+    bottom: -100px; /* Initially hidden */
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.795);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    transition: bottom 0.5s ease-in-out;
+    z-index: 1000;
+  }
+  
+  .bottom-bar.visible {
+    bottom: 0; /* Slide into view */
+  }

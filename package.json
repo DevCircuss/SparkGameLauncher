@@ -1,0 +1,40 @@
+{
+  "name": "my-electron-app",
+  "version": "1.0.0",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "dependencies": {
+    "steamgriddb": "^1.0.0"
+  },
+  "devDependencies": {
+    "electron": "^25.0.0",
+    "electron-builder": "^23.6.0"
+  },
+  "homepage": ".",
+  "license": "MIT",
+  "type": "commonjs",
+  "build": {
+    "appId": "com.example.myapp",
+    "productName": "MyElectronApp",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "public/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "src/assets/",
+        "to": "assets/"
+      }
+    ],
+    "win": {
+      "target": "nsis"
+    }
+  }
+}

@@ -1,0 +1,338 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark Game Launcher</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="top-bar">
+        <button id="settings-button">Settings</button>
+        <input type="text" id="search-box" placeholder="Search...">
+        <select id="sort-dropdown">
+            <option value="asc">A-Z</option>
+            <option value="desc">Z-A</option>
+            <option value="release-asc">Newest</option>
+            <option value="release-desc">Oldest</option>
+            <option value="'favorites'">Favorites</option>
+        </select>
+        <select id="filter-condition">
+            <option value="home">Home</option>
+            <option value="all">All</option>
+            <option value="unreleased">Upcoming</option>
+            <option value="favorite">Favorite</option>
+        </select>
+        <input type="range" id="zoom-slider" min="1" max="3" step="0.025" value="1">
+        <button id="add-game-button">Add Game</button>
+    </div>
+    <div id="home-screen" style="display: none;">
+      <div class="home-row" data-title="Recently Played">
+        <h2>Recently Played</h2>
+        <div class="row-content">
+          <button class="scroll-left">&lt;</button>
+          <div class="row-games"></div>
+          <button class="scroll-right">&gt;</button>
+        </div>
+      </div>
+      <div class="home-row" data-title="New Releases">
+        <h2>New Releases</h2>
+        <div class="row-content">
+          <button class="scroll-left">&lt;</button>
+          <div class="row-games"></div>
+          <button class="scroll-right">&gt;</button>
+        </div>
+      </div>
+      <div class="home-row" data-title="Upcoming">
+        <h2>Upcoming</h2>
+        <div class="row-content">
+          <button class="scroll-left">&lt;</button>
+          <div class="row-games"></div>
+          <button class="scroll-right">&gt;</button>
+        </div>
+      </div>
+      <div class="home-row" data-title="Favorites">
+        <h2>Favorites</h2>
+        <div class="row-content">
+          <button class="scroll-left">&lt;</button>
+          <div class="row-games"></div>
+          <button class="scroll-right">&gt;</button>
+        </div>
+      </div>
+    </div>
+    <div id="image-grid"></div>
+    <div id="context-menu" class="context-menu">
+        <button id="favorite-button"></button>
+    </div>
+    <div id="add-game-form" class="form-container" style="display: none;">
+        <div class="form-header">
+          <h2>Game Details</h2>
+          <button id="close-form-button">X</button>
+        </div>
+        <form id="game-form">
+          <div class="form-fields">
+            <label for="game-name">Title:</label>
+            <input type="text" id="game-name" name="name" required>
+            <button type="button" id="find-boxart-button">Search Boxart</button>
+            <label for="game-sorttitle">Sort Title:</label>
+            <input type="text" id="game-sorttitle" name="sortTitle">
+            <label for="game-console">Console:</label>
+            <select id="game-console" name="console">
+              <option value="">None</option>
+              <option value="pc">Microsoft Windows</option>
+              <option value="xbx">Microsoft Xbox</option>
+              <option value="x360">Microsoft Xbox 360</option>
+              <option value="xone">Microsoft Xbox One</option>
+              <option value="xsx">Microsoft Xbox Series X</option>
+              <option value="ps1">Sony PlayStation</option>
+              <option value="ps2">Sony PlayStation 2</option>
+              <option value="ps3">Sony PlayStation 3</option>
+              <option value="ps4">Sony PlayStation 4</option>
+              <option value="ps5">Sony PlayStation 5</option>
+              <option value="psp">Sony PlayStation Portable</option>
+              <option value="psv">Sony PlayStation Vita</option>
+              <option value="nes">Nintendo Entertainment System</option>
+              <option value="snes">Super Nintendo Entertainment System</option>
+              <option value="n64">Nintendo 64</option>
+              <option value="ngc">Nintendo GameCube</option>
+              <option value="wii">Nintendo Wii</option>
+              <option value="wiiu">Nintendo Wii U</option>
+              <option value="switch">Nintendo Switch</option>
+              <option value="gb">Nintendo Game Boy</option>
+              <option value="gbc">Nintendo Game Boy Color</option>
+              <option value="gba">Nintendo GameBoy Advance</option>
+              <option value="nds">Nintendo DS</option>
+              <option value="3ds">Nintendo 3DS</option>
+            </select>
+            <label for="game-release">Release Date:</label>
+            <input type="date" id="game-release" name="release">
+            <label for="game-collection">Collection:</label>
+            <input type="text" id="game-collection" name="collection">
+            <label for="game-launcher">Launcher:</label>
+            <input type="text" id="game-launcher" name="launcher">
+            <label for="game-boxart" hidden>Boxart Path:</label>
+            <input type="text" id="game-boxart" name="boxart" hidden>
+            <button type="submit">Save</button>
+          </div>
+          <div class="boxart-navigation">
+            <button type="button" id="prev-boxart-button" class="hidden">&lt;</button>
+            <img id="boxart-preview" src="../src/assets/images/DEFAULT_BOXART.png" alt="Boxart Preview" style="display: block;">
+            <button type="button" id="next-boxart-button" class="hidden">&gt;</button>
+        </div>
+      </div>
+      <div id="edit-collection-form" class="form-container" style="display: none;">
+        <div class="form-header">
+          <h2></h2>
+          <button id="close-form-button">X</button>
+        </div>
+        <form id="collection-form">
+          <div class="form-fields">
+            <label for="collectionname">Collection Title:</label>
+            <input type="text" id="collectionname" name="name" required>
+            <button type="submit-collection">Save</button>
+          </div>
+        </form>
+      </div>
+      <div id="settings-form" class="form-container" style="display: none;">
+        <div class="form-header">
+          <h2>Settings</h2>
+          <button id="close-settings-button">X</button>
+        </div>
+        <div class="tabs">
+          <button class="tab-button" data-tab="appearance">Appearance</button>
+          <button class="tab-button" data-tab="integration">Integration</button>
+        </div>
+        <div class="tab-content" id="appearance-tab">
+          <label for="background1">Background 1:</label>
+          <input type="color" id="background1">
+          <label for="background2">Background 2:</label>
+          <input type="color" id="background2">
+          <label for="font-color">Font Color:</label>
+          <input type="color" id="font-color">
+        </div>
+        <div class="tab-content" id="integration-tab">
+          <label for="steamgriddb-key">steamgriddb.com Key:</label>
+          <input type="text" id="steamgriddb-key">
+        </div>
+        <button id="save-settings-button">Save</button>
+      </div>
+    <script src="../src/renderer.js"></script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark Game Launcher</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="top-bar">
+        <button id="settings-button">Settings</button>
+        <input type="text" id="search-box" placeholder="Search...">
+        <select id="sort-dropdown">
+            <option value="asc">A-Z</option>
+            <option value="desc">Z-A</option>
+            <option value="release-asc">Newest</option>
+            <option value="release-desc">Oldest</option>
+            <option value="'favorites'">Favorites</option>
+        </select>
+        <select id="filter-condition">
+            <option value="home">Home</option>
+            <option value="all">All</option>
+            <option value="unreleased">Upcoming</option>
+            <option value="favorite">Favorite</option>
+        </select>
+        <input type="range" id="zoom-slider" min="1" max="3" step="0.025" value="1">
+        <button id="add-game-button">Add Game</button>
+    </div>
+    <div id="home-screen" style="display: none;">
+      <div class="home-row" data-title="Recently Played">
+        <h2>Recently Played</h2>
+        <div class="row-content">
+          <button class="scroll-left">&lt;</button>
+          <div class="row-games"></div>
+          <button class="scroll-right">&gt;</button>
+        </div>
+      </div>
+      <div class="home-row" data-title="New Releases">
+        <h2>New Releases</h2>
+        <div class="row-content">
+          <button class="scroll-left">&lt;</button>
+          <div class="row-games"></div>
+          <button class="scroll-right">&gt;</button>
+        </div>
+      </div>
+      <div class="home-row" data-title="Upcoming">
+        <h2>Upcoming</h2>
+        <div class="row-content">
+          <button class="scroll-left">&lt;</button>
+          <div class="row-games"></div>
+          <button class="scroll-right">&gt;</button>
+        </div>
+      </div>
+      <div class="home-row" data-title="Favorites">
+        <h2>Favorites</h2>
+        <div class="row-content">
+          <button class="scroll-left">&lt;</button>
+          <div class="row-games"></div>
+          <button class="scroll-right">&gt;</button>
+        </div>
+      </div>
+    </div>
+    <div id="image-grid"></div>
+    <div id="context-menu" class="context-menu">
+        <button id="favorite-button"></button>
+    </div>
+    <div id="add-game-form" class="form-container" style="display: none;">
+        <div class="form-header">
+          <h2>Game Details</h2>
+          <button type="button" id="close-form-button">X</button>
+        </div>
+        <form id="game-form">
+          <div class="form-fields">
+            <label for="game-name">Title:</label>
+            <input type="text" id="game-name" name="name" required>
+            <button type="button" id="find-boxart-button">Search Boxart</button>
+            <label for="game-sorttitle">Sort Title:</label>
+            <input type="text" id="game-sorttitle" name="sortTitle">
+            <label for="game-console">Console:</label>
+            <select id="game-console" name="console">
+              <option value="">None</option>
+              <option value="pc">Microsoft Windows</option>
+              <option value="xbx">Microsoft Xbox</option>
+              <option value="x360">Microsoft Xbox 360</option>
+              <option value="xone">Microsoft Xbox One</option>
+              <option value="xsx">Microsoft Xbox Series X</option>
+              <option value="ps1">Sony PlayStation</option>
+              <option value="ps2">Sony PlayStation 2</option>
+              <option value="ps3">Sony PlayStation 3</option>
+              <option value="ps4">Sony PlayStation 4</option>
+              <option value="ps5">Sony PlayStation 5</option>
+              <option value="psp">Sony PlayStation Portable</option>
+              <option value="psv">Sony PlayStation Vita</option>
+              <option value="nes">Nintendo Entertainment System</option>
+              <option value="snes">Super Nintendo Entertainment System</option>
+              <option value="n64">Nintendo 64</option>
+              <option value="ngc">Nintendo GameCube</option>
+              <option value="wii">Nintendo Wii</option>
+              <option value="wiiu">Nintendo Wii U</option>
+              <option value="switch">Nintendo Switch</option>
+              <option value="gb">Nintendo Game Boy</option>
+              <option value="gbc">Nintendo Game Boy Color</option>
+              <option value="gba">Nintendo GameBoy Advance</option>
+              <option value="nds">Nintendo DS</option>
+              <option value="3ds">Nintendo 3DS</option>
+            </select>
+            <label for="game-release">Release Date:</label>
+            <input type="date" id="game-release" name="release">
+            <label for="game-collection">Collection:</label>
+            <input type="text" id="game-collection" name="collection">
+            <label for="game-launcher">Launcher:</label>
+            <input type="text" id="game-launcher" name="launcher">
+            <label for="game-boxart" hidden>Boxart Path:</label>
+            <input type="text" id="game-boxart" name="boxart" hidden>
+            <button type="submit">Save</button>
+          </div>
+          <div class="boxart-navigation">
+            <button type="button" id="prev-boxart-button" class="hidden">&lt;</button>
+            <img id="boxart-preview" src="../src/assets/images/DEFAULT_BOXART.png" alt="Boxart Preview" style="display: block;">
+            <button type="button" id="next-boxart-button" class="hidden">&gt;</button>
+          </div>
+        </form>
+      </div>
+      <div id="edit-collection-form" class="form-container" style="display: none;">
+        <div class="form-header">
+          <h2></h2>
+          <button type="button" id="close-collection-form-button">X</button>
+        </div>
+        <form id="collection-form">
+          <div class="form-fields">
+              <label for="collectionname">Collection Title:</label>
+              <input type="text" id="collectionname" name="" required>
+              <button type="button" id="find-collectionart-button">Search Boxart</button>
+            <div>
+              <label for="background1">Background Colors:</label>
+              <input type="color" id="collection-background1">
+              <input type="color" id="collection-background2">
+            </div>
+            <div class="collectionart-navigation">
+              <button type="button" id="prev-collectionart-button" class="hidden">&lt;</button>
+              <img id="collectionart-preview" src="../src/assets/collections/DEFAULT_COLLECTION.png" alt="Boxart Preview" style="display: block;">
+              <button type="button" id="next-collectionart-button" class="hidden">&gt;</button>
+            </div>
+            <button id="submit-collection" type="button">Save</button>
+          </div>
+        </form>
+      </div>
+      <div id="settings-form" class="form-container" style="display: none;">
+        <div class="form-header">
+          <h2>Settings</h2>
+          <button type="button" id="close-settings-button">X</button>
+        </div>
+        <div class="tabs">
+          <button class="tab-button" data-tab="appearance">Appearance</button>
+          <button class="tab-button" data-tab="integration">Integration</button>
+        </div>
+        <div class="tab-content" id="appearance-tab">
+          <label for="background1">Background 1:</label>
+          <input type="color" id="background1">
+          <label for="background2">Background 2:</label>
+          <input type="color" id="background2">
+          <label for="font-color">Font Color:</label>
+          <input type="color" id="font-color">
+        </div>
+        <div class="tab-content" id="integration-tab">
+          <label for="steamgriddb-key">steamgriddb.com Key:</label>
+          <input type="text" id="steamgriddb-key">
+        </div>
+        <button id="save-settings-button">Save</button>
+      </div>
+    <!-- Bottom bar -->
+    <div id="bottom-bar" class="bottom-bar">
+      <div id="controls-legend"></div>
+    </div>
+    <script src="../src/renderer.js"></script>
+</body>
+</html>

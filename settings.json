@@ -1,0 +1,66 @@
+[
+  {
+    "theme_color1": "#0b0061",
+    "theme_color2": "#06168e",
+    "font_color": "#d0d1e1",
+    "default_zoom": 1.3
+  },
+  {
+    "scraper_steamgriddb_key": "aa47eb718d19485fe780d1aa924df6b7"
+  },
+  {
+    "Advance Wars": {
+      "theme_color1": "#ff7b00",
+      "theme_color2": "#3345cc"
+    },
+    "Parasite Eve": {
+      "theme_color1": "#ffffff",
+      "theme_color2": "#b38ed7"
+    },
+    "Age of Empires": {
+      "theme_color1": "#3b281b",
+      "theme_color2": "#b08345"
+    },
+    "Alan Wake": {
+      "theme_color1": "#233b70",
+      "theme_color2": "#131525"
+    },
+    "Animal Crossing": {
+      "theme_color1": "#07a5da",
+      "theme_color2": "#1d8c68"
+    },
+    "Aragami": {
+      "theme_color1": "#5d6d86",
+      "theme_color2": "#05080e"
+    },
+    "Armored Core": {
+      "theme_color1": "#365d6c",
+      "theme_color2": "#010309"
+    },
+    "Assassins Creed": {
+      "theme_color1": "#40697e",
+      "theme_color2": "#ffffff"
+    },
+    "Baldurs Gate": {
+      "theme_color1": "#0b0061",
+      "theme_color2": "#06168e"
+    },
+    "Banjo Kazooie": {
+      "theme_color1": "#38604e",
+      "theme_color2": "#0b0b0b"
+    },
+    "Batman telltale": {
+      "theme_color1": "#e3e3e3",
+      "theme_color2": "#191919"
+    },
+    "Bayonetta": {
+      "theme_color1": "#c31716",
+      "theme_color2": "#160707"
+    },
+    "Lonely Mountains": {
+      "theme_color1": "#0b0061",
+      "theme_color2": "#06168e"
+    }
+  },
+  {}
+]
